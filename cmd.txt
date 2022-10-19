@@ -1,0 +1,171 @@
+-- Script SQL
+
+-- Langage de definition de données
+
+-- Creation d'un base de données
+DROP DATABASE IF EXISTS poec_asr;
+CREATE DATABASE poec_asr;
+
+-- Utilisation d'une db
+USE poec_asr;
+
+-- Création de la table person, avec la declaration de la colonne id en tant que cle primaire
+-- Une clé primaire identifie un ensemble de colonnes
+CREATE TABLE personne(
+	id int PRIMARY KEY AUTO_INCREMENT,
+    nom varchar(45) NOT NULL,
+    prenom varchar(45) NOT NULL,
+    age int,
+    salaire int,
+	ville varchar(45) DEFAULT 'Nice',
+    CHECK(age < 150)
+);
+
+CREATE TABLE voiture(
+	immatriculation int PRIMARY KEY AUTO_INCREMENT,
+    marque varchar(45),
+    modele varchar(45),
+    annee int,
+    id_personne int,
+    FOREIGN KEY (id_personne) REFERENCES personne(id)
+);
+
+-- Pour supprimer une table
+-- DROP TABLE voiture;
+
+-- DROP TABLE personne;
+
+CREATE TABLE employe(
+	cni char(6),
+    prenom char(20),
+    nom char(20),
+    CONSTRAINT pk_employe PRIMARY KEY (prenom, nom)
+);
+
+ALTER TABLE employe 
+DROP PRIMARY KEY;
+
+ALTER TABLE employe 
+ADD CONSTRAINT pk_employe PRIMARY KEY (cni);
+
+ALTER TABLE employe 
+MODIFY COLUMN nom varchar(45) NOT NULL;
+
+-- Langage de manipulation de donnees
+
+-- Inserer une valeur pour chaque colonne
+INSERT INTO personne VALUES
+(1, "Wick", "John", 30, 2000, "Nice"),
+(2, "Doe", "Bob", 40, 1500, "Paris"),
+(3, "Wayne", "John", 30, 2000, "Marseille"),
+(4, "Benzema", "Karim", 33, 20000, "Lyon");
+
+-- Dans cet exemple, nous precisons les colonnes -> utile pour l'auto-increment
+INSERT INTO personne(nom, prenom, age, salaire, ville) VALUE ("Cooper", "John", 45, 2000, "New-York");
+
+INSERT INTO personne(nom, prenom) VALUE ("Dupont", "Henri");
+
+INSERT INTO personne SET nom = "Dupond", prenom = "Jean", age = 30, salaire = 2000;
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+DROP DATABASE IF EXISTS CINEMAS;
+CREATE DATABASE CINEMAS;
+
+USE CINEMAS;
+
+CREATE TABLE Ville (
+	CodePostal INT,
+	NomVille VARCHAR(45),
+    CONSTRAINT PK_Ville PRIMARY KEY (CodePostal),
+    check(CodePostal like "_____"));
+
+CREATE TABLE Cinema (
+	NumCinema INT,
+	NomCinema VARCHAR(45),
+	RueCinema VARCHAR(45),
+	Codepostal INT,
+    CONSTRAINT PK_Cinema PRIMARY KEY (NumCinema),
+	CONSTRAINT FK_Cinema FOREIGN KEY (CodePostal) REFERENCES Ville(CodePostal)
+);
+
+CREATE TABLE Salle (
+	NumSalle INT,
+	Capacite INT,
+	NumCinema INT,
+	CONSTRAINT FK_Salle FOREIGN KEY (NumCinema) REFERENCES Cinema(NumCinema),
+	CONSTRAINT PK_Salle PRIMARY KEY(NumSalle),
+    CHECK(Capacite between 30 and 100)
+);
+
+CREATE TABLE Film (
+	NumFilm INT,
+	Titre VARCHAR(45),
+	Duree INT,
+	Producteur VARCHAR(45),
+	CONSTRAINT PK_Film PRIMARY KEY (NumFilm)
+);
+
+CREATE TABLE Projection (
+	NumFilm INT,
+	NumSalle INT,
+	DateP DATE,
+	NbreEntree INT,
+	CONSTRAINT FK_ProjectionFilm FOREIGN KEY (NumFilm) REFERENCES Film(NumFilm),
+	CONSTRAINT FK_ProjectionSalle FOREIGN KEY (NumSalle) REFERENCES Salle(NumSalle),
+	CONSTRAINT PK_Project PRIMARY KEY (NumFilm, NumSalle, DateP)
+);
+
+INSERT INTO Ville VALUES
+(11111, "VILLE1"),
+(22222,"VILLE2"),
+(33333,"VILLE3");
+
+INSERT INTO Cinema VALUES
+(1,"CINEMA1","RUE1",11111),
+(2,"CINEMA2","RUE2",22222),
+(3,"CINEMA3","RUE3",33333);
+
+INSERT INTO Salle VALUES
+(1,40,1),
+(2,35,1),
+(3,60,2),
+(4,90,3),
+(5,40,2);
+
+INSERT INTO Film VALUES
+(1,"FILM1",90,"PROD1"),
+(2,"FILM2",90,"PROD2"),
+(3,"FILM3",80,"PROD3"),
+(4,"FILM4",70,"PROD4");
+
+INSERT INTO Projection VALUES
+(1,2,"2011-10-21",30),
+(2,1,"2011-10-24",80),
+(3,1,"2011-10-25",50),
+(4,4,"2011-10-16",70),
+(1,3,"2011-10-25",60),
+(2,2,"2011-10-23",20),
+(1,4,"2011-08-25",50),
+(1,4,"2011-08-27",50),
+(1,4,"2014-10-24",50),
+(2,1,"2015-10-24",50);
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
