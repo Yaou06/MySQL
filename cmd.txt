@@ -327,10 +327,52 @@ WHERE ville = 'Marseille';
 -- Ecrire une requete SQL qui permet de selectionner les personnes qui
 -- habitent Marseille ou Nice.
 
+SELECT * FROM personne
+WHERE ville = 'Nice' OR ville = 'Marseille';
+
 -- Ecrire une requete SQL qui permet de selectionner les personnes dont
 -- le salaire est compris entre 2000 et 3000.
 
+SELECT * FROM personne
+WHERE salaire >= 2000 AND salaire <= 3000;
 
+SELECT *
+FROM personne
+WHERE salaire BETWEEN 2000 AND 3000;
+
+
+
+
+-- Ecrire une requete SQL qui permet de selectionner les personnes qui
+-- habitent Marseille et dont le salaire est soit inferieur ou egal a 2000 soit
+-- superieur ou egal a 2500.
+
+SELECT * FROM personne
+WHERE (salaire <= 2000 OR salaire >= 2500) AND ville = 'Marseille';
+
+SELECT * FROM personne
+WHERE salaire NOT BETWEEN 2001 AND 2499 AND ville = "Marseille";
+
+
+-- Selectionne les personnes dont le nom de la ville contient le caractère a
+SELECT *
+FROM personne
+WHERE ville like '%a%';
+
+-- Selectionne les personnes dont le nom de la ville commence par le caractère p
+SELECT *
+FROM person
+WHERE ville like 'p%';
+
+-- Selectionne les personnes dont le nom de la ville finit par le caractère s
+SELECT *
+FROM person
+WHERE ville like '%s';
+
+-- Selectionne les personnes dont le cinquieme caractère est un d
+SELECT *
+FROM person
+WHERE nom like '____d%';
 
 
 
