@@ -289,12 +289,12 @@ INSERT INTO personne SET nom = "Dupond", prenom = "Jean", age = 30, salaire = 20
 
 -- SELECT : selectionner les colonnes
 -- FROM : cibler la table concerné
-
 -- WHERE : Déclarer une condition
 -- ....
 
 -- Selectionne toutes les données de la table personne
-SELECT * FROM personne;
+SELECT * 
+FROM personne;
 
 -- Selectionne les colonnes nom et prenom de la table personne
 SELECT nom, prenom
