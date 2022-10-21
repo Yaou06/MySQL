@@ -58,7 +58,8 @@ INSERT INTO personne VALUES
 (1, "Wick", "John", 30, 2000, "Nice"),
 (2, "Doe", "Bob", 40, 1500, "Paris"),
 (3, "Wayne", "John", 30, 2000, "Marseille"),
-(4, "Benzema", "Karim", 33, 20000, "Lyon");
+(4, "Benzema", "Karim", 33, 20000, "Lyon"),
+(5, "DiMaria", "Angel", 33, 20000, "Marseille");
 
 -- Dans cet exemple, nous precisons les colonnes -> utile pour l'auto-increment
 INSERT INTO personne(nom, prenom, age, salaire, ville) VALUE ("Cooper", "John", 45, 2000, "New-York");
@@ -67,221 +68,16 @@ INSERT INTO personne(nom, prenom) VALUE ("Dupont", "Henri");
 
 INSERT INTO personne SET nom = "Dupond", prenom = "Jean", age = 30, salaire = 2000;
 
-
-
----------------------------------------------------------------------------------------------
-
-
-
-DROP DATABASE IF EXISTS CINEMAS;
-CREATE DATABASE CINEMAS;
-
-USE CINEMAS;
-
-CREATE TABLE Ville (
-	CodePostal INT,
-	NomVille VARCHAR(45),
-    CONSTRAINT PK_Ville PRIMARY KEY (CodePostal),
-    check(CodePostal like "_____"));
-
-CREATE TABLE Cinema (
-	NumCinema INT,
-	NomCinema VARCHAR(45),
-	RueCinema VARCHAR(45),
-	Codepostal INT,
-    CONSTRAINT PK_Cinema PRIMARY KEY (NumCinema),
-	CONSTRAINT FK_Cinema FOREIGN KEY (CodePostal) REFERENCES Ville(CodePostal)
-);
-
-CREATE TABLE Salle (
-	NumSalle INT,
-	Capacite INT,
-	NumCinema INT,
-	CONSTRAINT FK_Salle FOREIGN KEY (NumCinema) REFERENCES Cinema(NumCinema),
-	CONSTRAINT PK_Salle PRIMARY KEY(NumSalle),
-    CHECK(Capacite between 30 and 100)
-);
-
-CREATE TABLE Film (
-	NumFilm INT,
-	Titre VARCHAR(45),
-	Duree INT,
-	Producteur VARCHAR(45),
-	CONSTRAINT PK_Film PRIMARY KEY (NumFilm)
-);
-
-CREATE TABLE Projection (
-	NumFilm INT,
-	NumSalle INT,
-	DateP DATE,
-	NbreEntree INT,
-	CONSTRAINT FK_ProjectionFilm FOREIGN KEY (NumFilm) REFERENCES Film(NumFilm),
-	CONSTRAINT FK_ProjectionSalle FOREIGN KEY (NumSalle) REFERENCES Salle(NumSalle),
-	CONSTRAINT PK_Project PRIMARY KEY (NumFilm, NumSalle, DateP)
-);
-
-INSERT INTO Ville VALUES
-(11111, "VILLE1"),
-(22222,"VILLE2"),
-(33333,"VILLE3");
-
-INSERT INTO Cinema VALUES
-(1,"CINEMA1","RUE1",11111),
-(2,"CINEMA2","RUE2",22222),
-(3,"CINEMA3","RUE3",33333);
-
-INSERT INTO Salle VALUES
-(1,40,1),
-(2,35,1),
-(3,60,2),
-(4,90,3),
-(5,40,2);
-
-INSERT INTO Film VALUES
-(1,"FILM1",90,"PROD1"),
-(2,"FILM2",90,"PROD2"),
-(3,"FILM3",80,"PROD3"),
-(4,"FILM4",70,"PROD4");
-
-INSERT INTO Projection VALUES
-(1,2,"2011-10-21",30),
-(2,1,"2011-10-24",80),
-(3,1,"2011-10-25",50),
-(4,4,"2011-10-16",70),
-(1,3,"2011-10-25",60),
-(2,2,"2011-10-23",20),
-(1,4,"2011-08-25",50),
-(1,4,"2011-08-27",50),
-(1,4,"2014-10-24",50),
-(2,1,"2015-10-24",50);
-
-
-
------------------------------------------------------------------------------------------
-
-
--- Création d"une base de données
-DROP DATABASE IF EXISTS ecole;
-CREATE DATABASE ecole;
-
--- Utilisation d"une bdd
-USE ecole;
-
-CREATE TABLE etudiant (
-	matricule varchar(30) primary key,
-	nom varchar(30),
-	prenom  varchar(30),
-	dateNaissance date,
-	niveau varchar(30),
-	CONSTRAINT pk_etudiant PRIMARY KEY (matricule)
-);
-
-CREATE TABLE cours (
-	code varchar(30) primary key, 
-	nomCours varchar(30), 
-	enseignant varchar(30),
-    CONSTRAINT pk_cours PRIMARY KEY (code)
-);
-
-CREATE TABLE examen (
-	matricule varchar(30) , 
-	code varchar(30), 
-	note float, 
-	CONSTRAINT fk1_examen FOREIGN KEY (matricule) REFERENCES etudiant(matricule), 
-	CONSTRAINT fk2_examen FOREIGN KEY (code) REFERENCES cours(code), 
-	CONSTRAINT pk_examen PRIMARY KEY (matricule, code_matiere)
-);
-
-INSERT INTO etudiant VALUES
-("1","NOM1","PRENOM1","1995-12-10","MASTER1"),
-("2","NOM2","PRENOM2","1995-02-19","MASTER2"),
-("3","NOM3","PRENOM3","1996-05-04","DUT");
-
-INSERT INTO cours VALUES
-("M1","MATIERE1","PROFESSEUR1"),
-("M2","MATIERE2","PROFESSEUR2"),
-("M3","MATIERE3","PROFESSEUR3");
-
-INSERT INTO examen VALUES
-("2","M1",15),
-("2","M2",14),
-("3","M3",9),
-("1","M1",13),
-("3","M1",13);
-
-
-
---------------------------------------------------------------------
-
-
--- Script SQL
-
--- Langage de definition de données
-
--- Creation d'un base de données
-DROP DATABASE IF EXISTS poec_asr;
-CREATE DATABASE poec_asr;
-
--- Utilisation d'une db
-USE poec_asr;
-
--- Création de la table person, avec la declaration de la colonne id en tant que cle primaire
--- Une clé primaire identifie un ensemble de colonnes
-CREATE TABLE personne(
-	id int PRIMARY KEY AUTO_INCREMENT,
-    nom varchar(45) NOT NULL,
-    prenom varchar(45) NOT NULL,
-    age int,
-    salaire int,
-	ville varchar(45) DEFAULT 'Nice',
-    CHECK(age < 150)
-);
-
-CREATE TABLE voiture(
-	immatriculation int PRIMARY KEY AUTO_INCREMENT,
-    marque varchar(45),
-    modele varchar(45),
-    annee int,
-    id_personne int,
-    FOREIGN KEY (id_personne) REFERENCES personne(id)
-);
-
--- Pour supprimer une table
--- DROP TABLE voiture;
-
--- DROP TABLE personne;
-
-CREATE TABLE employe(
-	cni char(6),
-    prenom char(20),
-    nom char(20),
-    CONSTRAINT pk_employe PRIMARY KEY (prenom, nom)
-);
-
-ALTER TABLE employe 
-DROP PRIMARY KEY;
-
-ALTER TABLE employe 
-ADD CONSTRAINT pk_employe PRIMARY KEY (cni);
-
-ALTER TABLE employe 
-MODIFY COLUMN nom varchar(45) NOT NULL;
-
--- Langage de manipulation de donnees
-
--- Inserer une valeur pour chaque colonne
-INSERT INTO personne VALUES
-(1, "Wick", "John", 30, 2000, "Nice"),
-(2, "Doe", "Bob", 40, 1500, "Paris"),
-(3, "Wayne", "John", 30, 2000, "Marseille"),
-(4, "Benzema", "Karim", 33, 20000, "Lyon");
-
--- Dans cet exemple, nous precisons les colonnes -> utile pour l'auto-increment
-INSERT INTO personne(nom, prenom, age, salaire, ville) VALUE ("Cooper", "John", 45, 2000, "New-York");
-
-INSERT INTO personne(nom, prenom) VALUE ("Dupont", "Henri");
-
-INSERT INTO personne SET nom = "Dupond", prenom = "Jean", age = 30, salaire = 2000;
+INSERT INTO voiture VALUES
+(100, 'Peugeot', '5008', 2018, 5),
+(200, 'Renault', 'clio', 2000, 4),
+(201, 'Renault', 'clio', 2000, 6),
+(300, 'Ford', 'fiesta', 2010, 1),
+(400, 'Peugeot', '106', 2002, 3),
+(500, 'Citroen', 'C4', 2015, 4),
+(501, 'Citroen', 'C4', 2015, 6),
+(600, 'Ford', 'Kuga', 2019, null),
+(700, 'Fiat', 'punto', 2008, 5);
 
 -- Langage d'interrogation de données
 
@@ -289,12 +85,12 @@ INSERT INTO personne SET nom = "Dupond", prenom = "Jean", age = 30, salaire = 20
 
 -- SELECT : selectionner les colonnes
 -- FROM : cibler la table concerné
+
 -- WHERE : Déclarer une condition
 -- ....
 
 -- Selectionne toutes les données de la table personne
-SELECT * 
-FROM personne;
+SELECT * FROM personne;
 
 -- Selectionne les colonnes nom et prenom de la table personne
 SELECT nom, prenom
@@ -340,9 +136,6 @@ SELECT *
 FROM personne
 WHERE salaire BETWEEN 2000 AND 3000;
 
-
-
-
 -- Ecrire une requete SQL qui permet de selectionner les personnes qui
 -- habitent Marseille et dont le salaire est soit inferieur ou egal a 2000 soit
 -- superieur ou egal a 2500.
@@ -353,7 +146,6 @@ WHERE (salaire <= 2000 OR salaire >= 2500) AND ville = 'Marseille';
 SELECT * FROM personne
 WHERE salaire NOT BETWEEN 2001 AND 2499 AND ville = "Marseille";
 
-
 -- Selectionne les personnes dont le nom de la ville contient le caractère a
 SELECT *
 FROM personne
@@ -361,22 +153,109 @@ WHERE ville like '%a%';
 
 -- Selectionne les personnes dont le nom de la ville commence par le caractère p
 SELECT *
-FROM person
+FROM personne
 WHERE ville like 'p%';
 
 -- Selectionne les personnes dont le nom de la ville finit par le caractère s
 SELECT *
-FROM person
+FROM personne
 WHERE ville like '%s';
 
 -- Selectionne les personnes dont le cinquieme caractère est un d
 SELECT *
-FROM person
+FROM personne
 WHERE nom like '____d%';
 
+-- Selectionne les voitures dont l'id du propriétaire est non-null
+-- cad, toutes les voitures qui ont un proprietaire
+SELECT *
+FROM voiture
+WHERE id_personne IS NOT NULL;
+
+-- Compte le nombre de vehicule pour chaque personne
+-- Il faut les regrouper avec GROUP BY, ici selon la colonne id_personne
+-- ici, on filtre les resultats de la fonction d’agregation 
+SELECT id_personne, COUNT(*) AS nombre_vehicule
+FROM voiture
+WHERE id_personne IS NOT NULL
+GROUP BY id_personne
+HAVING nombre_vehicule > 1;
+
+-- Utiliser la fonction IFNULL() por remplacer les valeurs nulles par une autre valeur
+SELECT marque, IFNULL(id_personne,'pas de proprietaire') AS proprietaire
+FROM voiture;
+
+-- Classe le resultat selon le numero du proprietaire
+-- ORDER BY : ASC par defaut, sinon declarer DESC pour un ordre décroissant
+SELECT *
+FROM voiture
+WHERE id_personne IS NOT NULL
+ORDER BY id_personne DESC;
+
+-- Fonctions d'aggregation
+
+-- COUNT()
+-- MAX()
+-- MIN()
+-- SUM()
+-- AVG()
+
+-- Ecrire une requete SQL qui permet de compter la somme des salaires
+-- regroupe par ville
+SELECT ville, SUM(salaire) AS somme_salaire
+FROM personne
+GROUP BY ville;
+
+-- Ecrire une requete SQL qui permet de regrouper les identifiants de
+-- personne qui ont un vehicule de marque Renault ou Citroen
+SELECT marque, id_personne
+FROM voiture
+WHERE marque = 'Renault' OR marque = 'Citroen'
+GROUP BY marque, id_personne;
+
+SELECT marque, id_personne
+FROM voiture
+WHERE marque = 'Renault'
+UNION
+SELECT marque, id_personne
+FROM voiture
+WHERE marque = 'Citroen';
+
+-- Les jointures
+
+-- Deux types de jointure
+
+-- Jointure implicite : Avec la clause WHERE
+SELECT nom, prenom, ville, marque, modele
+FROM personne, voiture
+WHERE personne.id = voiture.id_personne;
+
+-- En cas d'ambiguite, si 2 colonnes portent le même nom,
+-- il faudra les prefixer par le nom de leur table respective
+SELECT nom, prenom, ville, marque, modele
+FROM personne p, voiture v
+WHERE p.id = v.id_personne;
+
+-- Jointure Explicite : Avec la clause JOIN .. ON
+
+-- JOIN .. ON = Renvoie les lignes en cas de correspondance avec les 
+-- deux  tables
+SELECT nom, prenom, ville, marque, modele
+FROM personne p
+JOIN voiture v ON  p.id = v.id_personne;
+
+-- LEFT JOIN ... ON = Renvoie toutes les lignes de la table de gauche
+-- meme s'il n'y a aucune correspondance avec la table de droite
+SELECT nom, prenom, ville, marque, modele
+FROM personne
+LEFT JOIN voiture ON id = id_personne;
 
 
-
+-- RIGHT JOIN ... ON = Renvoie toutes les lignes de la table de droite
+-- meme s'il n'y a aucune correspondance avec la table de gauche
+SELECT nom, prenom, ville, marque, modele
+FROM personne
+RIGHT JOIN voiture ON id = id_personne;
 
 
 
