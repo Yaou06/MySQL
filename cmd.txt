@@ -298,3 +298,38 @@ call augmenterSalaireMin(100);
 
 
 
+-- Triggers (Déclencheurs)
+
+-- C'est un ensemble d'instruction attaché à une table
+
+-- Pour une table, un seul trigger par evenement et par moment
+
+-- Possibilité d'avoir un trigger BEFORE INSERT et un AFTER INSERT
+-- Possibilité d'avoir un trigger BEFORE UPDATE et un AFTER UPDATE
+
+-- Avant chaque insertion d'un nouveau tuple dans la table personne,
+-- si une valeur pour la colonne ville n'a pas ete renseigne, 
+-- on attribue la valeur Nice à la colonne ville
+
+DELIMITER |
+CREATE TRIGGER setVilleNice BEFORE INSERT ON personne
+FOR EACH ROW
+BEGIN
+	IF NEW.ville IS NULL THEN
+		SET NEW.ville = 'NIZZA';
+	END IF;
+END |
+DELIMITER ;
+
+INSERT INTO personne
+SET nom = "JOHN",
+prenom = "DOE",
+salaire = 1500;
+
+call augmenterSalaireMin(10000);
+
+
+
+
+
+
