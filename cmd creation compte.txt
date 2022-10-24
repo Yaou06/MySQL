@@ -1,0 +1,33 @@
+-- Langage de contrôle de données
+
+-- Commencer par créer un utilisateur
+CREATE USER 'john'@'localhost' IDENTIFIED BY '1234';
+
+-- Comment octroyer différentes autorisations aux utilisateurs ?
+
+-- ALL PRIVILEGES : comme nous l'avons vu précédemment, cela donne à l'utilisateur de MySQL 
+-- un total accès à toutes les bases de données 
+
+-- CREATE : permet de créer de nouvelles tables ou bases de données
+-- DROP :permet de supprimer des tables ou des bases de données
+-- DELETE : permet de supprimer des lignes des tables
+-- INSERT : permet d'insérer des lignes dans les tables
+-- SELECT :permet d'utiliser la commande SELECT pour lire des bases de données
+-- UPDATE : permet de mettre à jour les lignes d'une table
+-- GRANT OPTION : permet d'accorder ou de supprimer les privilèges des autres utilisateurs
+
+-- Donner accès à l'utilisateur aux informations dont il a besoin
+GRANT INSERT, DELETE ON poec_asr.* TO 'john'@'localhost';
+
+-- Toujours recharger tous les privilèges
+FLUSH PRIVILEGES;
+
+-- Supprimer toutes les autorisations
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'newuser'@'localhost';
+
+SHOW GRANTS FOR 'newuser'@'localhost';
+
+-- Supprimer un utilisateur
+DELETE FROM mysql.user WHERE user='newuser';
+
+SELECT user FROM mysql.user;

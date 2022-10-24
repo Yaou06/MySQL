@@ -258,6 +258,42 @@ FROM personne
 RIGHT JOIN voiture ON id = id_personne;
 
 
+-- Creation d une procedure stockée qui augmente le salaire de la 
+-- personne ayant le plus petit salaire
+
+-- DELIMITER |
+-- CREATE PROCEDURE augmenterSalaireMin(somme int)
+-- BEGIN
+-- DECLARE id_personne int;
+-- SELECT id INTO id_personne FROM personne WHERE salaire = (SELECT MIN(salaire)
+-- FROM personne);
+-- UPDATE personne SET salaire = salaire + somme WHERE id = id_personne;
+-- END |
+-- DELIMITER ;
+
+
+-- Creation d une procedure stockée qui augmente le salaire de la 
+-- personne ayant le plus petit salaire de 100 euros
+
+DELIMITER |
+CREATE PROCEDURE augmenterSalaireMin(somme int)
+BEGIN
+DECLARE id_personne INT;
+DECLARE smic INT;
+DECLARE min INT;
+SET smic = 1200;
+SELECT MIN(salaire) INTO min FROM personne;
+SELECT id INTO id_personne FROM personne WHERE salaire = min LIMIT 1;
+IF min > smic THEN
+UPDATE personne SET salaire = salaire + somme WHERE id = id_personne;
+ELSE
+UPDATE personne SET salaire = smic + somme WHERE id = id_personne;
+END IF;
+END |
+DELIMITER ;
+
+call augmenterSalaireMin(100);
+
 
 
 
